@@ -1,11 +1,10 @@
 package Geek.Blog.service.Impl;
 
 import Geek.Blog.Response.SignInResponse;
-import Geek.Blog.dto.BlogDTO;
+import Geek.Blog.dto.MemberDto;
 import Geek.Blog.dto.SignInRequestDTO;
 import Geek.Blog.dto.SignUpRequestDTO;
 import Geek.Blog.entity.Member;
-import Geek.Blog.repository.BlogRepository;
 import Geek.Blog.repository.MemberRepository;
 import Geek.Blog.service.MemberService;
 import Geek.Blog.util.JwtTokenProvider;
@@ -31,7 +30,6 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-    private final BlogRepository blogRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -126,9 +124,9 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.save(new Member(request));
         member.setPassword(passwordEncoder.encode(request.getPassword()));
         log.info("생성된 회원: " + member);
-
-        BlogDTO blogDTO = new BlogDTO(member);
-        blogRepository.create(blogDTO);
+//
+//        BlogDTO blogDTO = new BlogDTO(member);
+//        blogRepository.create(blogDTO);
 
         // 회원가입 후, 회원의 토큰를 반환
         //return generateToken(member.getEmail(), requestDto.getPassword(), member.getId(), requestDto.getPassword());
@@ -141,6 +139,7 @@ public class MemberServiceImpl implements MemberService {
         try {
             log.info("사용자 정보: " + userId);
             // 반환값을 사용하지 않도록 수정
+
             memberRepository.deleteById(userId);
 
         } catch (Exception e) {

@@ -12,19 +12,26 @@ server:
     include-stacktrace: always
 
 spring:
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://172.16.211.49:3306/GeekBlog?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&createDatabaseIfNotExist=true
-    username: root
-    password: qwer1234!
-
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
   jpa:
-
     hibernate:
       ddl-auto: create
+
+  datasource:
+    master:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      #라이터 DB
+      jdbc-url: jdbc:mysql://kea-002-member.cluster-cne10fapbpfh.us-east-1.rds.amazonaws.com:3306/kea-002-member
+      #jdbc-url: jdbc:mysql://{host_ip}:{host_port}/{DB_name}?createDatabaseIfNotExist=true
+      username: admin
+      password: geekaws123!
+
+    slave:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      #리더 DB
+      jdbc-url: jdbc:mysql://kea-002-member.cluster-ro-cne10fapbpfh.us-east-1.rds.amazonaws.com:3306/kea-002-member
+      #jdbc-url: jdbc:mysql://{host_ip}:{host_port}/{DB_name}
+      username: admin
+      password: geekaws123!
 
     properties:
       hibernate:
@@ -33,6 +40,8 @@ spring:
 
 logging:
   level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org:
       springframework:
         web=DEBUG:
